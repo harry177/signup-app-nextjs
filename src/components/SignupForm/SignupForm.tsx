@@ -49,7 +49,7 @@ export const SignupForm = () => {
         <div className="flex flex-col justify-between w-full h-[54px] gap-[12px]">
           <label className="h-[18px]">Are you a company?</label>
           <div className="flex w-full h-[24px] gap-[40px]">
-            <label className="relative flex gap-[3px] pl-[32px]">
+            <label className="relative flex gap-[3px] pl-[24px]">
               <FormInput
                 type="radio"
                 value="Yes"
@@ -59,15 +59,15 @@ export const SignupForm = () => {
                 onChange={handleOptionChange}
               />
               <span
-                className={`${
+                className={`w-[30px] text-end ${
                   selectedOption === "Yes" &&
                   "after:absolute after:content-[''] after:top-[8px] after:left-[8px] after:w-[8px] after:h-[8px] after:rounded-full after:bg-[#62c991]"
-                } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:border before:border-[2px] before:border-[#b1b1b1] before:rounded-[50%] before:hover:border-[#000000]`}
+                }  before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:border before:border-[2px] before:border-[#b1b1b1] before:rounded-[50%] before:hover:border-[#000000]`}
               >
                 Yes
               </span>
             </label>
-            <label className="relative flex gap-[3px] pl-[32px]">
+            <label className="relative flex gap-[3px] pl-[24px]">
               <FormInput
                 type="radio"
                 value="No"
@@ -77,7 +77,7 @@ export const SignupForm = () => {
                 onChange={handleOptionChange}
               />
               <span
-                className={`${
+                className={`w-[30px] text-end ${
                   selectedOption === "No" &&
                   "after:absolute after:content-[''] after:top-[8px] after:left-[8px] after:w-[8px] after:h-[8px] after:rounded-full after:bg-[#62c991]"
                 } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:border before:border-[2px] before:border-[#b1b1b1] before:rounded-[50%] before:hover:border-[#000000]`}
@@ -98,28 +98,28 @@ export const SignupForm = () => {
             <div className="absolute top-3 right-3 w-[24px] h-[24px] bg-[url('/closed-eye.svg')] bg-no-repeat bg-contain"></div>
           </div>
         </div>
-        <div className="relative flex w-full h-[24px] gap-[5px]">
+        <label className="relative flex w-full h-[24px] pl-[32px]">
           <FormInput
             type="checkbox"
             variant="checkbox"
             onChange={handleCheckbox}
           />
-          <span
+          <div
             className={`${
               isChecked &&
               "after:absolute after:content-[''] after:top-[7px] after:left-[5px] after:w-[14px] after:h-[10px] after:bg-[url('/checkmark.svg')] after:bg-no-repeat"
-            } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:rounded-[4px] before:border before:border-[2px] before:border-[#b1b1b1] before:hover:border-[#000000] ml-[32px]`}
+            } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:rounded-[4px] before:border before:border-[2px] before:border-[#b1b1b1] before:hover:border-[#000000]`}
           >
-            I agree with all
-          </span>
-          <span className="text-[#62c991] cursor-pointer">
-            Terms and Conditions
-          </span>
-          <span>and</span>
-          <span className="text-[#62c991] cursor-pointer">
-            Privacy Policies.
-          </span>
-        </div>
+            <span className="mr-[5px]">I agree with all</span>
+            <span className="text-[#62c991] cursor-pointer mr-[5px]">
+              Terms and Conditions
+            </span>
+            <span className="mr-[5px]">and</span>
+            <span className="text-[#62c991] cursor-pointer">
+              Privacy Policies.
+            </span>
+          </div>
+        </label>
       </div>
       <button
         type="submit"
