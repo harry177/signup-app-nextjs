@@ -83,6 +83,7 @@ export const SignupForm = () => {
     }));
 
     clearErrors("phoneLabel");
+   
   };
   const handleOptionChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(ev.target.value);
@@ -148,6 +149,12 @@ export const SignupForm = () => {
   useEffect(() => {
     isValid && setIsDisabled(false);
   }, [isValid]);
+
+  useEffect(() => {
+    if (formState.phone.length && formState.phone[1] !== "7") {
+      trigger("phoneLabel");
+    }
+  }, [formState])
 
   return (
     <div className="flex flex-col justify-between items-center w-full gap-[157px] mt-[73px] mr-[1px]">
@@ -245,7 +252,6 @@ export const SignupForm = () => {
               placeholder="+7(999)99-999-999"
               {...register("phoneLabel", {
                 required: true,
-                minLength: 5,
                 pattern: /^.{1}7/,
               })}
               onChange={handlePhoneChange}
