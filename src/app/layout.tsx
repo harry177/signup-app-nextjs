@@ -29,23 +29,21 @@ export default function RootLayout({
             </Link>
             <div className="flex flex-col w-[130px] h-[44px]">
               <span
-                className={`${seravek.className} text-[#000000] text-[20px] font-extrabold leading-6`}
+                className={`${seravek.className} text-[#000000] text-[20px] font-black leading-6 tracking-[.020em]`}
               >
                 Work time
               </span>
               <span
                 className={`${poppins.className} text-[#b1b1b1] text-[14px]`}
               >
-                HR managment
+                HR management
               </span>
             </div>
           </header>
           <main className="flex flex-grow justify-center items-center">
             {children}
           </main>
-          <footer className="w-full h-[100px] text-[16px] text-[#5b5b5b] p-[36px]">
-            Help@worktime.go
-          </footer>
+          <footer className="w-full"></footer>
         </div>
       </body>
     </html>
