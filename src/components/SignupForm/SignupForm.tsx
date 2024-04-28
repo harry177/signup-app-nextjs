@@ -1,8 +1,7 @@
 "use client";
 
-import localFont from "next/font/local";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FieldValues,
   SubmitHandler,
@@ -10,9 +9,13 @@ import {
   Controller,
 } from "react-hook-form";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import { FormHeader } from "@/components/FormHeader/FormHeader";
 import { FormInput } from "@/components/FormInput/FormInput";
-
-const myFont = localFont({ src: "../../../public/seravek.ttf" });
+import { FormError } from "@/components/FormError/FormError";
+import { CheckmarkBox } from "@/components/CheckmarkBox/CheckmarkBox";
+import { CustomStyledInput } from "@/components/CustomStyledInput/CustomStyledInput";
+import { formatPhoneLabel } from "@/utils/formatters";
+import { defaultValues } from "@/constants/constants";
 
 export const SignupForm = () => {
   const [visibility, setVisibility] = useState(false);
@@ -29,45 +32,11 @@ export const SignupForm = () => {
     handleSubmit,
   } = useForm({
     mode: "onChange",
-    defaultValues: {
-      nameLabel: "",
-      surnameLabel: "",
-      phoneLabel: "",
-      companyLabel: "",
-      addressLabel: "",
-      passwordLabel: "",
-      confirmLabel: false,
-    },
+    defaultValues,
   });
 
-  const phoneConstructor = (ev: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = ev.target.value;
-    const cleanedValue = inputValue.replace(/\D/g, "");
-    const template = "+_(___)__-___-___";
-    let formattedValue = "";
-
-    if (inputValue.length < getValues("phoneLabel").length) {
-      formattedValue = inputValue;
-    } else {
-      let digitIndex = 0;
-      for (let i = 0; i < template.length; i++) {
-        if (template[i] === "_") {
-          if (digitIndex < cleanedValue.length) {
-            formattedValue += cleanedValue[digitIndex];
-            digitIndex++;
-          } else {
-            break;
-          }
-        } else {
-          formattedValue += template[i];
-        }
-      }
-    }
-    return formattedValue;
-  };
-
   const handleVisibility = () => {
-    setVisibility(!visibility);
+    setVisibility((prev) => !prev);
   };
 
   const handleForm: SubmitHandler<FieldValues> = (data) => {
@@ -92,16 +61,7 @@ export const SignupForm = () => {
         className="flex flex-col justify-between w-[350px] sm:w-[442px] md:w-[460px] gap-[40px]"
         onSubmit={handleSubmit(handleForm)}
       >
-        <div className="flex flex-col justify-between items-center w-full h-fit">
-          <h1
-            className={`${myFont.className} font-extrabold text-[32px] text-[#000000]`}
-          >
-            Sign up
-          </h1>
-          <h2 className="h-[25px] text-[16px] text-[#5b5b5b] mr-1">
-            Please provide your name and email
-          </h2>
-        </div>
+        <FormHeader />
         <div className="flex flex-col justify-between w-full gap-[20px] text-[14px] text-[#000000]">
           <div
             className={`flex justify-between w-full ${
@@ -116,12 +76,10 @@ export const SignupForm = () => {
               <label className="h-[18px]">Your name</label>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                  minLength: 2,
-                }}
+                rules={{ required: true, minLength: 2 }}
                 render={({ field: { onChange, value } }) => (
                   <FormInput
+                    variant={errors.nameLabel ? "defaultError" : "default"}
                     maxLength={15}
                     placeholder="Your name"
                     onChange={onChange}
@@ -130,23 +88,9 @@ export const SignupForm = () => {
                 )}
                 name="nameLabel"
               />
-              {errors.nameLabel?.type === "required" && (
-                <span className="text-[12px] text-[#cf4545]">
-                  Please enter the name
-                </span>
-              )}
-              {errors?.nameLabel?.type === "minLength" && (
-                <span className="text-[12px] text-[#cf4545]">
-                  Name is too short
-                </span>
-              )}
-              <div
-                className={`absolute top-9 right-4 w-[24px] h-[24px] z-20 bg-no-repeat bg-contain ${
-                  !errors.nameLabel && dirtyFields.nameLabel
-                    ? "bg-[url('/tick-circle.svg')]"
-                    : ""
-                }`}
-              ></div>
+              <FormError errors={errors} label={"nameLabel"} type={"required"} message={"Please enter the name"} />
+              <FormError errors={errors} label={"nameLabel"} type={"minLength"} message={"Name is too short"} />
+              <CheckmarkBox errors={errors} dirtyFieldsLabel={dirtyFields.nameLabel} label={"nameLabel"} />
             </div>
             <div
               className={`relative flex flex-col ${
@@ -156,12 +100,10 @@ export const SignupForm = () => {
               <label className="h-[18px]">Your last name</label>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                  minLength: 2,
-                }}
+                rules={{ required: true, minLength: 2 }}
                 render={({ field: { onChange, value } }) => (
                   <FormInput
+                    variant={errors.surnameLabel ? "defaultError" : "default"}
                     maxLength={15}
                     placeholder="Your last name"
                     onChange={onChange}
@@ -170,69 +112,41 @@ export const SignupForm = () => {
                 )}
                 name="surnameLabel"
               />
-              {errors?.surnameLabel?.type === "required" && (
-                <span className="text-[12px] text-[#cf4545]">
-                  Please enter the last name
-                </span>
-              )}
-              {errors?.surnameLabel?.type === "minLength" && (
-                <span className="text-[12px] text-[#cf4545]">
-                  Last name is too short
-                </span>
-              )}
-              <div
-                className={`absolute top-9 right-4 w-[24px] h-[24px] z-20 bg-no-repeat bg-contain ${
-                  !errors.surnameLabel && dirtyFields.surnameLabel
-                    ? "bg-[url('/tick-circle.svg')]"
-                    : ""
-                }`}
-              ></div>
+              <FormError errors={errors} label={"surnameLabel"} type={"required"} message={"Please enter the last name"} />
+              <FormError errors={errors} label={"surnameLabel"} type={"minLength"} message={"Last name is too short"} />
+              <CheckmarkBox errors={errors} dirtyFieldsLabel={dirtyFields.surnameLabel} label={"surnameLabel"} />
             </div>
           </div>
           <div className="relative flex flex-col justify-between w-full gap-[6px]">
             <label className="h-[18px]">Mobile Number</label>
             <Controller
               control={control}
-              rules={{
-                required: true,
-                pattern: /^.{1}7/,
-              }}
+              rules={{ required: true, pattern: /^.{1}7/ }}
               render={({ field: { onChange, value } }) => (
                 <FormInput
+                  variant={errors.phoneLabel ? "defaultError" : "default"}
                   placeholder="+7(999)99-999-999"
                   onChange={(ev) => {
-                    onChange(phoneConstructor(ev));
+                    onChange(formatPhoneLabel(ev, getValues));
                   }}
                   value={value}
                 />
               )}
               name="phoneLabel"
             />
-            {errors?.phoneLabel?.type === "required" && (
-              <span className="text-[12px] text-[#cf4545]">
-                Please enter the phone number
-              </span>
-            )}
-            {errors?.phoneLabel?.type === "pattern" && (
-              <span className="text-[12px] text-[#cf4545]">
-                Please enter the number in the format +7
-              </span>
-            )}
-            <div
-              className={`absolute top-9 right-4 w-[24px] h-[24px] z-20 bg-no-repeat bg-contain ${
-                !errors.phoneLabel && dirtyFields.phoneLabel
-                  ? "bg-[url('/tick-circle.svg')]"
-                  : ""
-              }`}
-            ></div>
+            <FormError errors={errors} label={"phoneLabel"} type={"required"} message={"Please enter the phone number"} />
+            <FormError errors={errors} label={"phoneLabel"} type={"pattern"} message={"Please enter the number in the format +7"} />
+            <CheckmarkBox errors={errors} dirtyFieldsLabel={dirtyFields.phoneLabel} label={"phoneLabel"} />
           </div>
-          <div className="flex flex-col justify-between w-full h-[54px] gap-[12px]">
+          <div
+            className={`flex flex-col justify-between w-full h-[54px] gap-[12px] ${
+              errors.companyLabel ? "mb-7" : ""
+            }`}
+          >
             <label className="h-[18px]">Are you a company?</label>
             <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
+              rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <div className="flex w-full h-[24px] gap-[40px]">
                   <label className="relative flex gap-[3px] pl-[24px]">
@@ -244,14 +158,7 @@ export const SignupForm = () => {
                       onChange={(ev) => onChange(ev.target.value)}
                       value="Yes"
                     />
-                    <span
-                      className={`w-[30px] text-end ${
-                        getValues("companyLabel") === "Yes" &&
-                        "after:absolute after:content-[''] after:top-[8px] after:left-[8px] after:w-[8px] after:h-[8px] after:rounded-full after:bg-[#62c991]"
-                      }  before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:border before:border-[2px] before:border-[#b1b1b1] before:rounded-[50%] before:hover:border-[#000000]`}
-                    >
-                      Yes
-                    </span>
+                    <CustomStyledInput value={getValues("companyLabel")} option={"Yes"} />
                   </label>
                   <label className="relative flex gap-[3px] pl-[24px]">
                     <FormInput
@@ -262,35 +169,22 @@ export const SignupForm = () => {
                       onChange={(ev) => onChange(ev.target.value)}
                       value="No"
                     />
-                    <span
-                      className={`w-[30px] text-end ${
-                        getValues("companyLabel") === "No" &&
-                        "after:absolute after:content-[''] after:top-[8px] after:left-[8px] after:w-[8px] after:h-[8px] after:rounded-full after:bg-[#62c991]"
-                      } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:border before:border-[2px] before:border-[#b1b1b1] before:rounded-[50%] before:hover:border-[#000000]`}
-                    >
-                      No
-                    </span>
+                    <CustomStyledInput value={getValues("companyLabel")} option={"No"} />
                   </label>
                 </div>
               )}
               name="companyLabel"
             />
-            {errors?.companyLabel?.type === "required" && (
-              <span className="text-[12px] text-[#cf4545] mt-[-5px]">
-                Please make selection
-              </span>
-            )}
+            <FormError errors={errors} label={"companyLabel"} type={"required"} message={"Please make selection"} />
           </div>
           <div className="relative flex flex-col justify-between w-full gap-[6px]">
             <label className="h-[18px]">Address</label>
             <Controller
               control={control}
-              rules={{
-                required: true,
-                minLength: 5,
-              }}
+              rules={{ required: true, minLength: 5 }}
               render={({ field: { onChange, value } }) => (
                 <FormInput
+                  variant={errors.addressLabel ? "defaultError" : "default"}
                   maxLength={30}
                   placeholder="Enter your company address"
                   onChange={onChange}
@@ -299,35 +193,19 @@ export const SignupForm = () => {
               )}
               name="addressLabel"
             />
-            {errors?.addressLabel?.type === "required" && (
-              <span className="text-[12px] text-[#cf4545]">
-                Please enter the address
-              </span>
-            )}
-            {errors?.addressLabel?.type === "minLength" && (
-              <span className="text-[12px] text-[#cf4545]">
-                Address is too short
-              </span>
-            )}
-            <div
-              className={`absolute top-9 right-4 w-[24px] h-[24px] z-20 bg-no-repeat bg-contain ${
-                !errors.addressLabel && dirtyFields.addressLabel
-                  ? "bg-[url('/tick-circle.svg')]"
-                  : ""
-              }`}
-            ></div>
+            <FormError errors={errors} label={"addressLabel"} type={"required"} message={"Please enter the address"} />
+            <FormError errors={errors} label={"addressLabel"} type={"minLength"} message={"Address is too short"} />
+            <CheckmarkBox errors={errors} dirtyFieldsLabel={dirtyFields.addressLabel} label={"addressLabel"} />
           </div>
           <div className="flex flex-col justify-between w-full gap-[6px]">
             <label className="h-[18px]">Password</label>
             <div className="relative">
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                  minLength: 5,
-                }}
+                rules={{ required: true, minLength: 5 }}
                 render={({ field: { onChange, value } }) => (
                   <FormInput
+                    variant={errors.passwordLabel ? "defaultError" : "default"}
                     type={visibility ? "text" : "password"}
                     maxLength={30}
                     placeholder="Create password"
@@ -337,16 +215,8 @@ export const SignupForm = () => {
                 )}
                 name="passwordLabel"
               />
-              {errors?.passwordLabel?.type === "required" && (
-                <span className="text-[12px] text-[#cf4545]">
-                  Please enter the password
-                </span>
-              )}
-              {errors?.passwordLabel?.type === "minLength" && (
-                <span className="text-[12px] text-[#cf4545]">
-                  Password is too short
-                </span>
-              )}
+              <FormError errors={errors} label={"passwordLabel"} type={"required"} message={"Please enter the password"} />
+              <FormError errors={errors} label={"passwordLabel"} type={"minLength"} message={"Password is too short"} />
               <div
                 className={`absolute top-3 right-5 w-[24px] h-[24px] z-20 bg-no-repeat bg-contain ${
                   visibility
@@ -355,73 +225,36 @@ export const SignupForm = () => {
                 }`}
                 onClick={handleVisibility}
               ></div>
-              <div
-                className={`absolute top-3 right-14 w-[24px] h-[24px] z-20 bg-no-repeat bg-contain ${
-                  !errors.passwordLabel && dirtyFields.passwordLabel
-                    ? "bg-[url('/tick-circle.svg')]"
-                    : ""
-                }`}
-              ></div>
+              <CheckmarkBox errors={errors} dirtyFieldsLabel={dirtyFields.passwordLabel} label={"passwordLabel"} />
             </div>
           </div>
           <div className="flex flex-col">
-            <label className="relative flex w-full h-[24px] pl-[32px]">
+            <label className="relative flex items-center w-full h-[24px] pl-[32px]">
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
+                rules={{ required: true }}
                 render={({ field: { onChange } }) => (
-                  <FormInput
-                    type="checkbox"
-                    variant="checkbox"
-                    maxLength={30}
-                    placeholder="Create password"
-                    onChange={onChange}
-                  />
+                  <FormInput type="checkbox" variant="checkbox" maxLength={30} placeholder="Create password" onChange={onChange} />
                 )}
                 name="confirmLabel"
               />
               <div
-                className={`${
+                className={`flex flex-wrap gap-[5px]   ${
                   getValues("confirmLabel") &&
-                  "after:absolute after:content-[''] after:top-[7px] after:left-[5px] after:w-[14px] after:h-[10px] after:bg-[url('/checkmark.svg')] after:bg-no-repeat"
-                } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] before:rounded-[4px] before:border before:border-[2px] before:border-[#b1b1b1] before:hover:border-[#000000]`}
+                  "after:absolute after:content-[''] after:w-[14px] after:h-[10px] after:top-[7px] after:left-[5px] after:bg-[url('/checkmark.svg')] after:bg-no-repeat"
+                } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] leading-4 before:rounded-[4px] before:border before:border-[2px] before:border-[#b1b1b1] before:hover:border-[#000000]`}
               >
-                {isMobile ? (
-                  <div>
-                    <div>
-                      <span className="mr-[5px]">I agree with all</span>
-                      <span className="text-[#62c991] cursor-pointer mr-[5px]">
-                        Terms and Conditions
-                      </span>
-                      <span className="mr-[5px]">and</span>
-                    </div>
-                    <div>
-                      <span className="text-[#62c991] cursor-pointer">
-                        Privacy Policies.
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <span className="mr-[5px]">I agree with all</span>
-                    <span className="text-[#62c991] cursor-pointer mr-[5px]">
-                      Terms and Conditions
-                    </span>
-                    <span className="mr-[5px]">and</span>
-                    <span className="text-[#62c991] cursor-pointer">
-                      Privacy Policies.
-                    </span>
-                  </>
-                )}
+                <span>I agree with all</span>
+                <span className="text-[#62c991] cursor-pointer">
+                  Terms and Conditions
+                </span>
+                <span>and</span>
+                <span className="text-[#62c991] cursor-pointer">
+                  Privacy Policies.
+                </span>
               </div>
             </label>
-            {errors?.confirmLabel?.type === "required" && (
-              <span className="text-[12px] text-[#cf4545] mt-[15px]">
-                Please confirm
-              </span>
-            )}
+            <FormError errors={errors} label={"confirmLabel"} type={"required"} message={"Please confirm"} />
           </div>
         </div>
         <button

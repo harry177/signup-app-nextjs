@@ -6,7 +6,9 @@ const inputVariants = cva("border border-2 border-[#b1b1b1]", {
   variants: {
     variant: {
       default:
-        "w-full h-[48px] rounded-[8px] indent-[14px] text-[16px] placeholder:text-[16px] placeholder:text-[#b1b1b1] placeholder:hover:text-[#000000] hover:border-[#000000] focus:border-[#000000]",
+        "w-full h-[48px] rounded-[8px] indent-[14px] text-[16px] text-[#5b5b5b] caret-[#5b5b5b] placeholder:text-[16px] placeholder:text-[#b1b1b1] placeholder:hover:text-[#5b5b5b] hover:border-[#5b5b5b] focus:border-[#5b5b5b] focus:outline-none",
+      defaultError:
+        "w-full h-[48px] rounded-[8px] indent-[14px] text-[16px] text-[#cf4545] caret-[#cf4545] placeholder:text-[16px] placeholder:text-[#b1b1b1] placeholder:hover:text-[#5b5b5b] hover:border-[#5b5b5b] focus:border-[#5b5b5b] focus:outline-none",
       radio: "w-[24px] h-[24px]",
       checkbox: "w-[24px] h-[24px] absolute z-50 opacity-0",
     },
