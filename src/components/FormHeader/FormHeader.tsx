@@ -10,7 +10,7 @@ export const FormHeader = () => {
       >
         Sign up
       </h1>
-      <h2 className="h-[25px] text-[16px] text-[#5b5b5b] mr-1">
+      <h2 className="h-[25px] text-[16px] text-[#5b5b5b] mr-1 leading-8">
         Please provide your name and email
       </h2>
     </div>

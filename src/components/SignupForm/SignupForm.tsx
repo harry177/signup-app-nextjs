@@ -29,11 +29,15 @@ export const SignupForm = () => {
     getValues,
     control,
     trigger,
+    setValue,
     handleSubmit,
+    watch
   } = useForm({
     mode: "onChange",
     defaultValues,
   });
+
+  const isNoAddress = watch("companyLabel") === "No";
 
   const handleVisibility = () => {
     setVisibility((prev) => !prev);
@@ -54,6 +58,12 @@ export const SignupForm = () => {
   useEffect(() => {
     isValid && setIsDisabled(false);
   }, [isValid]);
+
+  useEffect(() => {
+    setValue("addressLabel", "");
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNoAddress])
 
   return (
     <div className="flex flex-col justify-between items-center w-full gap-[157px] mt-[73px] mr-[1px]">
@@ -148,7 +158,7 @@ export const SignupForm = () => {
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
-                <div className="flex w-full h-[24px] gap-[40px]">
+                <div className="flex w-full h-[24px] gap-[42px]">
                   <label className="relative flex gap-[3px] pl-[24px]">
                     <FormInput
                       type="radio"
@@ -177,6 +187,7 @@ export const SignupForm = () => {
             />
             <FormError errors={errors} label={"companyLabel"} type={"required"} message={"Please make selection"} />
           </div>
+          {watch("companyLabel") === "Yes" ? 
           <div className="relative flex flex-col justify-between w-full gap-[6px]">
             <label className="h-[18px]">Address</label>
             <Controller
@@ -196,7 +207,7 @@ export const SignupForm = () => {
             <FormError errors={errors} label={"addressLabel"} type={"required"} message={"Please enter the address"} />
             <FormError errors={errors} label={"addressLabel"} type={"minLength"} message={"Address is too short"} />
             <CheckmarkBox errors={errors} dirtyFieldsLabel={dirtyFields.addressLabel} label={"addressLabel"} />
-          </div>
+          </div> : null}
           <div className="flex flex-col justify-between w-full gap-[6px]">
             <label className="h-[18px]">Password</label>
             <div className="relative">
@@ -229,7 +240,7 @@ export const SignupForm = () => {
             </div>
           </div>
           <div className="flex flex-col">
-            <label className="relative flex items-center w-full h-[24px] pl-[32px]">
+            <label className="relative flex items-center w-full h-[24px] pl-[34px]">
               <Controller
                 control={control}
                 rules={{ required: true }}
@@ -239,7 +250,7 @@ export const SignupForm = () => {
                 name="confirmLabel"
               />
               <div
-                className={`flex flex-wrap gap-[5px]   ${
+                className={`flex flex-wrap gap-[6px]   ${
                   getValues("confirmLabel") &&
                   "after:absolute after:content-[''] after:w-[14px] after:h-[10px] after:top-[7px] after:left-[5px] after:bg-[url('/checkmark.svg')] after:bg-no-repeat"
                 } before:absolute before:content-[''] before:top-0 before:left-0 before:w-[24px] before:h-[24px] leading-4 before:rounded-[4px] before:border before:border-[2px] before:border-[#b1b1b1] before:hover:border-[#000000]`}
