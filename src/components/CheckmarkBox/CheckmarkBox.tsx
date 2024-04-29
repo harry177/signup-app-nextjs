@@ -8,12 +8,12 @@ export const CheckmarkBox = ({
 }: CheckmarkBoxProps) => {
   return (
     <div
-      className={cn("absolute  h-[24px] z-20 bg-no-repeat bg-contain", {
-        "top-9 right-4 w-[24px] bg-[url('/tick-circle.svg')]":
+      className={cn("absolute z-20 bg-no-repeat bg-contain top-[9.230vw] xs:top-9", {
+        "w-[6.153vw] xs:w-[24px] h-[6.153vw] xs:h-[24px] right-[4.102vw] xs:right-4 bg-[url('/tick-circle.svg')]":
           label !== "passwordLabel" &&
           !errors[label as keyof FormLabelProps] &&
           dirtyFieldsLabel,
-        "top-3 right-14 w-[24px] bg-[url('/tick-circle.svg')]":
+        "w-[6.153vw] xs:w-[24px] h-[6.153vw] xs:h-[24px] right-[14.359vw] xs:right-14 bg-[url('/tick-circle.svg')]":
           label === "passwordLabel" &&
           !errors[label as keyof FormLabelProps] &&
           dirtyFieldsLabel,
