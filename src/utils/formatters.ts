@@ -5,7 +5,7 @@ import { FormLabelProps } from "@/types/types";
 export const formatPhoneLabel = (event: ChangeEvent<HTMLInputElement>, getValues: UseFormGetValues<FormLabelProps>) => {
     const inputValue = event.target.value;
     const cleanedValue = inputValue.replace(/\D/g, "");
-    const template = "+_(___)__-___-___";
+    const template = "+_(___)___-__-__";
     let formattedValue = "";
 
     if (inputValue.length < getValues("phoneLabel").length) {
